@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guanting.manager.dao.system.BaseOperationHistoryMapper" >
+  <resultMap id="BaseOperationHistorResultMap" type="com.guanting.manager.pojo.system.BaseOperationHistory" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="args" property="args" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="host" property="host" jdbcType="VARCHAR" />
+    <result column="address_url" property="addressUrl" jdbcType="VARCHAR" />
+    <result column="method_name" property="methodName" jdbcType="VARCHAR" />
+    <result column="zybh" property="zybh" jdbcType="VARCHAR" />
+    <result column="jsbh" property="jsbh" jdbcType="VARCHAR" />
+    <result column="param_key" property="paramKey" jdbcType="VARCHAR" />
+      <result column="user_key" property="userKey" jdbcType="VARCHAR" />
+    <result column="response_time" property="responseTime" jdbcType="BIGINT" />
+    <result column="response_object" property="responseObject" jdbcType="VARCHAR" />
+      <result column="message" property="message" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.guanting.manager.pojo.system.BaseOperationHistory" >
+    insert into base_operation_history (id, user_id,user_name, code,
+      args, create_time, host, 
+      address_url, method_name, zybh,
+      jsbh, param_key,user_key,response_time,response_object,message)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+      #{args,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{host,jdbcType=VARCHAR}, 
+      #{addressUrl,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, #{zybh,jdbcType=VARCHAR},
+      #{jsbh,jdbcType=VARCHAR}, #{paramKey,jdbcType=VARCHAR}, #{userKey,jdbcType=VARCHAR},
+       #{responseTime,jdbcType=BIGINT}, #{responseObject,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR})
+  </insert>
+
+    <select id="getBaseOperationHistoryList" resultMap="BaseOperationHistorResultMap" parameterType="com.guanting.manager.pojo.system.BaseOperationHistory" >
+        select
+        *
+        from base_operation_history
+        <where>
+            <if test="id != null and id != '' ">
+                and id =   #{id}
+            </if>
+
+            <if test="paramKey != null and paramKey != '' ">
+                and param_key  LIKE  CONCAT('%', #{paramKey} ,'%')
+            </if>
+            <if test="methodName != null and methodName != '' ">
+                and method_name  LIKE  CONCAT('%', #{methodName} ,'%')
+            </if>
+            <if test="userName != null and userName != '' ">
+                and user_name   LIKE  CONCAT('%', #{userName} ,'%')
+            </if>
+            <if test="startTime != null and startTime != '' ">
+                and to_char(create_time, 'YYYY-MM-DD') &gt;=  #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                and to_char(create_time, 'YYYY-MM-DD') &lt;=  #{endTime}
+            </if>
+        </where>
+    </select>
+
+  <insert id="insertSelective" parameterType="com.guanting.manager.pojo.system.BaseOperationHistory" >
+    insert into base_operation_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="args != null" >
+        args,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="host != null" >
+        host,
+      </if>
+      <if test="addressUrl != null" >
+        address_url,
+      </if>
+      <if test="methodName != null" >
+        method_nane,
+      </if>
+      <if test="zybh != null" >
+        zybh,
+      </if>
+      <if test="jsbh != null" >
+        jsbh,
+      </if>
+      <if test="paramKey != null" >
+        param_key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="args != null" >
+        #{args,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="host != null" >
+        #{host,jdbcType=VARCHAR},
+      </if>
+      <if test="addressUrl != null" >
+        #{addressUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="methodNane != null" >
+        #{methodNane,jdbcType=VARCHAR},
+      </if>
+      <if test="zybh != null" >
+        #{zybh,jdbcType=VARCHAR},
+      </if>
+      <if test="jsbh != null" >
+        #{jsbh,jdbcType=VARCHAR},
+      </if>
+      <if test="paramKey != null" >
+        #{paramKey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+</mapper>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='操作履历'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="interfaceHistorySearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">操作人</label>
+                <div class="layui-input-inline">
+                    <input id="userNameSearch" name="userName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+                <label class="layui-form-label">权限编码</label>
+                <div class="layui-input-inline">
+                    <input id="userKeySearch" name="userKey" autocomplete="off" class="layui-input" type="text" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">调用时间</label>
+                        <div class="layui-input-inline" style="width: 175px;">
+                            <input  name="startTime" id="startTime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text"/>
+                        </div>
+                    <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline" style="width: 175px;">
+                            <input name="endTime" id="endTime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text"/>
+                        </div>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">提交</button>
+                </div>
+            </div>
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>
+
+        <table id="interfaceOperationHistory" lay-filter="interfaceOperationHistoryTable"></table>
+
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/base/operationHistoryList.js"></script>
+
+</div>
+</body>
+</html>

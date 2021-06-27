@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guanting.manager.dao.system.BaseInterfaceInfoMapper" >
+  <resultMap id="BaseInterfaceInfoResultMap" type="com.guanting.manager.pojo.system.BaseInterfaceInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+     <result column="post" property="post" jdbcType="VARCHAR" />
+    <result column="module_code" property="moduleCode" jdbcType="VARCHAR" />
+    <result column="method_name" property="methodName" jdbcType="VARCHAR" />
+    <result column="method_type" property="methodType" jdbcType="VARCHAR" />
+    <result column="param_key" property="paramKey" jdbcType="VARCHAR" />
+    <result column="user_key" property="userKey" jdbcType="VARCHAR" />
+    <result column="timeout" property="timeout" jdbcType="BIGINT" />
+    <result column="frequency" property="frequency" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="interface_type" property="interfaceType" jdbcType="VARCHAR" />
+     <result column="desc_info" property="descInfo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, method_name, method_type, param_key, user_key, timeout, frequency, url, status, 
+    create_time, create_user_name, interface_type,module_code,desc_info,post
+  </sql>
+
+    <select id="getBaseInterfaceInfoListbyMap" resultMap="BaseInterfaceInfoResultMap" parameterType="java.util.Map" >
+        select
+        <include refid="Base_Column_List" />
+        from base_interface_info
+        <where>
+            <if test="id != null and id != '' ">
+                and id =   #{id}
+            </if>
+            <if test="paramKey != null and paramKey != '' ">
+                and param_key  LIKE  CONCAT('%', #{paramKey} ,'%')
+            </if>
+            <if test="methodName != null and methodName != '' ">
+                and method_name  LIKE  CONCAT('%', #{methodName} ,'%')
+            </if>
+            <if test="methodType != null and methodType != '' ">
+                and method_type  = #{methodType}
+            </if>
+        </where>
+    </select>
+
+  <select id="getBaseInterfaceInfoList" resultMap="BaseInterfaceInfoResultMap" parameterType="com.guanting.manager.dto.BaseInterfaceDTO" >
+    select
+    <include refid="Base_Column_List" />
+    from base_interface_info
+    <where>
+      <if test="id != null and id != '' ">
+        and id =   #{id}
+      </if>
+      <if test="moduleCode != null and moduleCode != '' ">
+        and module_code  LIKE  CONCAT('%', #{moduleCode} ,'%')
+      </if>
+     <if test="moduleName != null and moduleName != '' ">
+        and module_name  LIKE  CONCAT('%', #{moduleName} ,'%')
+     </if>
+      <if test="paramKey != null and paramKey != '' ">
+        and param_key  LIKE  CONCAT('%', #{paramKey} ,'%')
+      </if>
+      <if test="methodName != null and methodName != '' ">
+        and method_name  LIKE  CONCAT('%', #{methodName} ,'%')
+      </if>
+      <if test="methodType != null and methodType != '' ">
+        and method_type  = #{methodType}
+      </if>
+        <if test="paramSearch != null and paramSearch != '' ">
+            and ( module_name  LIKE  CONCAT('%', #{paramSearch} ,'%') or desc_info LIKE  CONCAT('%', #{paramSearch} ,'%')
+                or param_key  LIKE  CONCAT('%', #{paramSearch} ,'%') )
+        </if>
+    </where>
+  </select>
+
+    <update id="updateInterfaceInfo" parameterType="com.guanting.manager.pojo.system.BaseInterfaceInfo" >
+        update base_interface_info
+        <set >
+            <if test="moduleCode != null" >
+                module_code = #{moduleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="methodName != null" >
+                method_name = #{methodName,jdbcType=VARCHAR},
+            </if>
+            <if test="methodType != null" >
+                method_type = #{methodType,jdbcType=VARCHAR},
+            </if>
+            <if test="paramKey != null" >
+                param_key = #{paramKey,jdbcType=VARCHAR},
+            </if>
+            <if test="userKey != null" >
+                user_key = #{userKey,jdbcType=VARCHAR},
+            </if>
+            <if test="timeout != null" >
+                timeout = #{timeout,jdbcType=BIGINT},
+            </if>
+            <if test="frequency != null" >
+                frequency = #{frequency,jdbcType=INTEGER},
+            </if>
+            <if test="url != null" >
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserName != null" >
+                create_user_name = #{createUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="interfaceType != null" >
+                interface_type = #{interfaceType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateInterfaceStatus">
+    UPDATE base_interface_info
+    SET status = #{status}
+    WHERE id = #{id}
+  </update>
+
+    <select id="parentInterfacePermissionList" resultType="com.guanting.manager.pojo.system.BaseInterfaceInfo">
+    SELECT module_code,module_name
+      FROM base_interface_info
+			GROUP BY module_code,module_name
+  </select>
+
+  <insert id="insertInterfaceInfo" parameterType="com.guanting.manager.pojo.system.BaseInterfaceInfo" >
+    insert into base_interface_info (id, method_name, method_type, 
+      param_key, user_key, timeout, 
+      frequency, url, status, 
+      create_time, create_user_name, interface_type,module_code,post
+      )
+    values (#{id,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, #{methodType,jdbcType=VARCHAR}, 
+      #{paramKey,jdbcType=VARCHAR}, #{userKey,jdbcType=VARCHAR}, #{timeout,jdbcType=BIGINT}, 
+      #{frequency,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserName,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, #{moduleCode,jdbcType=VARCHAR},
+      #{post,jdbcType=VARCHAR}
+      )
+  </insert>
+
+</mapper>
